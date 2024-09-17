@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grafos con Vis.js</title>
+    <script src="https://unpkg.com/vis-network@9.1.0/standalone/umd/vis-network.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="grafos.css">
+
+</head>
+
+<body>
+    <div id="app">
+        <h1>Grafos con Vis.js Miguel Suarez y Karen Castañeda</h1>
+        <div id="mynetwork"></div>
+        <div class="controls">
+            <div class="control-group">
+                <input id="newNodeName" placeholder="Nombre Nodo">
+                <input id="newNodeDuration" placeholder="Duración">
+                <input id="newNodePrerequisites" placeholder="Prerequisitos">
+                <input id="newNodePostrequisites" placeholder="Postrequisitos">
+                <button class="button" onclick="addNode()">Agregar Nodo</button>
+            </div>
+            <div class="control-group">
+                <input id="fromNode" placeholder="Desde nodo">
+                <input id="toNode" placeholder="Hacia nodo">
+                <input id="newNodeCost" placeholder="Costo">
+                <input style="margin-left: -30px;margin-right: -40px;transform: scale(2);"type="checkbox" id="dirigido" name="dirigido" value="1">
+                <label style="color: aliceblue;font-size: 14px ;padding: 2px;margin-right: 10px;" for="dirigido">Dirigido</label>
+                <button class="button" onclick="addEdge()">Agregar Conexión</button>
+                
+            </div>
+            <div class="control-group">
+                <select id="selectedNode" style="height: 30px; padding: 5px;width: 80px; border-radius: 5px; font-size: 14px;">
+                    <option disabled value="">Selecciona un nodo para editar o eliminar</option>
+                </select>
+                <button class="button" onclick="updateNode()">Actualizar Nodo</button>
+                <button class="button" onclick="deleteNode()">Eliminar Nodo</button>
+                <select id="selectedAris" style="height: 30px; padding: 5px;width: 80px; border-radius: 5px; font-size: 14px;"></select>
+                    <option disabled value=""></option>
+                </select>
+                <button class="button" onclick="updateAris()">Actualizar Arista</button>
+                <button class="button" onclick="deleteAris()">Eliminar Arista</button>
+            </div>
+            
+        </div>
+    </div>
+    <script src="vis.js"></script>
+</body>
+
+</html>
