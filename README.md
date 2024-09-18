@@ -1,7 +1,7 @@
 ## **🦖 Dinographs - Graph Visualization & Pathfinding Web App**
 
 Welcome to Dinographs! 🌐🦕 This is a fun and educational web application designed to help you understand the magic of graph theory in a visual and interactive way using Vis.js. 🧠✨ With this app, you'll explore how to work with adjacency matrices and dive into the world of pathfinding by implementing the Dijkstra algorithm to discover the shortest paths on a graph! 🛤️🔍
-reated by me and my friend Miguel 👨‍💻👨‍💻, this simple yet powerful tool is here to guide you through the fascinating world of graphs.
+created by me and my friend Miguel 👨‍💻👨‍💻, this simple yet powerful tool is here to guide you through the fascinating world of graphs.
 
 🌟 Features:
 
