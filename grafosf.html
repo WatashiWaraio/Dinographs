@@ -19,8 +19,8 @@
             <div id="mainButtons" style="text-align: center;padding: 10px; margin-left: 10px;">
                 <button class="button" style="padding: 10px 70px; margin: 20px;" onclick="showControls1()">Grafos</button>
                 <button class="button" style="padding: 10px 70px; margin: 20px;" onclick="showControls2()">Calcular Ruta</button>
-                <button class="button" style="padding: 10px 50px; margin: 20px;" onclick="showControls3()">Matriz Adyacencia</button>
-                <input type="file" id="input" style="padding: 20px;margin-top: -40px;margin-left:-50px; justify-content: center;" onchange="handleFiles(this.files)">
+                <button class="button" style="padding: 10px 50px; margin: 20px;" onclick="showControls3()">Matrices</button>
+                <input type="file" id="input" style="padding: 20px;margin-top: -40px;margin-left:0px; justify-content: center;" onchange="handleFiles(this.files)">
             </div>
             <div id="controlsSection" class="controls" style="display: none; margin: 10px;">
                 <div class="control-group">
@@ -51,9 +51,15 @@
                     <button class="button" onclick="deleteAris()">Eliminar Arista</button>
                 </div>
             </div>
-            <div  id="controlsSection2" class="controls" style="display: none; margin: 10px;">    
+            <div  id="controlsSection2" class="controls" style="display: none; margin: 10px;"> 
+                <input  id="fromNode" placeholder="Desde nodo">
+                <input   id="toNode" placeholder="Hacia nodo">
+                <button  style="margin:20px; margin-left: 270px;" class="button" onclick="showM1()">Ruta Maxima</button>
+                <button  class="button" onclick="rtamin()">Ruta Minima</button>
             </div>
             <div id="controlsSection3" class="controls" style="display: none; margin: 10px;">
+                <button  style="margin:20px; margin-left: 250px;" class="button" onclick="showM1()">Matriz Adyacencia</button>
+                <button class="button" onclick="rtamax()">Matriz Incidencia</button>
             </div>
         </div>
     <script src="vis.js"></script>
@@ -68,7 +74,13 @@
         }
         function showControls3() {
             document.getElementById("mainButtons").style.display = "none";
-            document.getElementById("controlsSection2").style.display = "block";
+            document.getElementById("controlsSection3").style.display = "block";
+        }
+        function doClick() {
+            var el = document.getElementById("input");
+            if (el) {
+                el.click();
+            }
         }
 </script>
 </body>
