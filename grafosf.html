@@ -16,38 +16,62 @@
         <h1>Grafos con Vis.js Miguel Suarez y Karen Castañeda</h1>
         <div id="mynetwork"></div>
         <div class="controls">
-            <div class="control-group">
-                <input id="newNodeName" placeholder="Nombre Nodo">
-                <input id="newNodeDuration" placeholder="Duración">
-                <input id="newNodePrerequisites" placeholder="Prerequisitos">
-                <input id="newNodePostrequisites" placeholder="Postrequisitos">
-                <button class="button" onclick="addNode()">Agregar Nodo</button>
+            <div id="mainButtons" style="text-align: center;padding: 10px; margin-left: 10px;">
+                <button class="button" style="padding: 10px 70px; margin: 20px;" onclick="showControls1()">Grafos</button>
+                <button class="button" style="padding: 10px 70px; margin: 20px;" onclick="showControls2()">Calcular Ruta</button>
+                <button class="button" style="padding: 10px 50px; margin: 20px;" onclick="showControls3()">Matriz Adyacencia</button>
             </div>
-            <div class="control-group">
-                <input id="fromNode" placeholder="Desde nodo">
-                <input id="toNode" placeholder="Hacia nodo">
-                <input id="newNodeCost" placeholder="Costo">
-                <input style="margin-left: -30px;margin-right: -40px;transform: scale(2);"type="checkbox" id="dirigido" name="dirigido" value="1">
-                <label style="color: aliceblue;font-size: 14px ;padding: 2px;margin-right: 10px;" for="dirigido">Dirigido</label>
-                <button class="button" onclick="addEdge()">Agregar Conexión</button>
+            <div id="controlsSection" class="controls" style="display: none; margin: 10px;">
+                <div class="control-group">
+                    <input id="newNodeName" placeholder="Nombre Nodo">
+                    <input id="newNodeDuration" placeholder="Duración">
+                    <button class="button" onclick="addNode()">Agregar Nodo</button>
+                    
+                </div>
+                <div class="control-group">
+                    <input id="fromNode" placeholder="Desde nodo">
+                    <input id="toNode" placeholder="Hacia nodo">
+                    <input id="newNodeCost" placeholder="Costo">
+                    <input style="margin-left: -30px;margin-right: -40px;transform: scale(2);"type="checkbox" id="dirigido" name="dirigido" value="1">
+                    <label style="color: aliceblue;font-size: 14px ;padding: 2px;margin-right: 10px;" for="dirigido">Dirigido</label>
+                    <button class="button" onclick="addEdge()">Agregar Conexión</button>
+                    
+                </div>
+                <div class="control-group">
+                    <select id="selectedNode" style="height: 30px; padding: 5px;width: 80px; border-radius: 5px; font-size: 14px;">
+                        <option disabled value="">Selecciona un nodo para editar o eliminar</option>
+                    </select>
+                    <button class="button" onclick="updateNode()">Actualizar Nodo</button>
+                    <button class="button" onclick="deleteNode()">Eliminar Nodo</button>
+                    <select id="selectedAris" style="height: 30px; padding: 5px;width: 80px; border-radius: 5px; font-size: 14px;"></select>
+                        <option disabled value=""></option>
+                    </select>
+                    <button class="button" onclick="updateAris()">Actualizar Arista</button>
+                    <button class="button" onclick="deleteAris()">Eliminar Arista</button>
+                </div>
+            </div>
+            <div  id="controlsSection2" class="controls" style="display: none; margin: 10px;">
                 
             </div>
-            <div class="control-group">
-                <select id="selectedNode" style="height: 30px; padding: 5px;width: 80px; border-radius: 5px; font-size: 14px;">
-                    <option disabled value="">Selecciona un nodo para editar o eliminar</option>
-                </select>
-                <button class="button" onclick="updateNode()">Actualizar Nodo</button>
-                <button class="button" onclick="deleteNode()">Eliminar Nodo</button>
-                <select id="selectedAris" style="height: 30px; padding: 5px;width: 80px; border-radius: 5px; font-size: 14px;"></select>
-                    <option disabled value=""></option>
-                </select>
-                <button class="button" onclick="updateAris()">Actualizar Arista</button>
-                <button class="button" onclick="deleteAris()">Eliminar Arista</button>
+            <div  id="controlsSection3" class="controls" style="display: none; margin: 10px;"></div>
+                
             </div>
-            
         </div>
-    </div>
     <script src="vis.js"></script>
+    <script>
+        function showControls1() {
+            document.getElementById("mainButtons").style.display = "none";
+            document.getElementById("controlsSection").style.display = "block";
+        }
+        function showControls2() {
+            document.getElementById("mainButtons").style.display = "none";
+            document.getElementById("controlsSection2").style.display = "block";
+        }
+        function showControls3() {
+            document.getElementById("mainButtons").style.display = "none";
+            document.getElementById("controlsSection2").style.display = "block";
+        }
+</script>
 </body>
 
 </html>
