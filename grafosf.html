@@ -20,6 +20,7 @@
                 <button class="button" style="padding: 10px 70px; margin: 20px;" onclick="showControls1()">Grafos</button>
                 <button class="button" style="padding: 10px 70px; margin: 20px;" onclick="showControls2()">Calcular Ruta</button>
                 <button class="button" style="padding: 10px 50px; margin: 20px;" onclick="showControls3()">Matriz Adyacencia</button>
+                <input type="file" id="input" style="padding: 20px;margin-top: -40px;margin-left:-50px; justify-content: center;" onchange="handleFiles(this.files)">
             </div>
             <div id="controlsSection" class="controls" style="display: none; margin: 10px;">
                 <div class="control-group">
@@ -50,11 +51,9 @@
                     <button class="button" onclick="deleteAris()">Eliminar Arista</button>
                 </div>
             </div>
-            <div  id="controlsSection2" class="controls" style="display: none; margin: 10px;">
-                
+            <div  id="controlsSection2" class="controls" style="display: none; margin: 10px;">    
             </div>
-            <div  id="controlsSection3" class="controls" style="display: none; margin: 10px;"></div>
-                
+            <div id="controlsSection3" class="controls" style="display: none; margin: 10px;">
             </div>
         </div>
     <script src="vis.js"></script>
