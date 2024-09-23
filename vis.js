@@ -147,7 +147,28 @@ function clearEdgeForm() {
     document.getElementById('toNode').value = '';
     document.getElementById('newNodeCost').value = '';
 }
-
+function showM1(){
+    const tabla= document.getElementById("tabla");
+    lis=nodes.getIds();
+    console.log(lis[0]);
+    for (let i = 0; i < nodes.length; i++) {
+        console.log(lis[i]);
+        var fila=tabla.insertRow(-1);
+        for (let j = 0; j < nodes.length; j++) {
+            var celda= fila.insertCell(-1);
+            const edgeval=edges.get({
+                filter: (item) => item.from === lis[i] && item.to ===lis[j] ||(item.from === lis[j] && item.to ===lis[i] && item.arrows!=="to")
+            })[0];
+            console.log(edgeval);
+            if(edgeval){
+                celda.innerHTML= edgeval.label;
+            }else{
+                celda.innerHTML=0;
+            }
+        }
+        
+    }
+}
 // Inicializar el select de nodos
 updateNodeSelect();
 updateArisSelect();
