@@ -26,6 +26,10 @@ body {
     border: 2px solid rgb(0, 0, 0);
     border-radius: 5px;
 }
+
+.table-container {
+    margin: 0 auto;
+  }
 .controls {
     margin-top: 20px;
     height: auto;

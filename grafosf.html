@@ -14,8 +14,8 @@
 <body>
     <div id="app">
         <h1>Grafos con Vis.js Miguel Suarez y Karen Castañeda</h1>
-        <div> <table id="tabla"> </table> </div>
         <div id="mynetwork"></div>
+        <div > <table  class="table-container"  id="tabla"> </table> </div>
         <div class="controls">
             <div id="mainButtons" style="text-align: center;padding: 10px; margin-left: 10px;">
                 <button class="button" style="padding: 10px 70px; margin: 20px;" onclick="showControls1()">Grafos</button>
@@ -51,7 +51,7 @@
                     <button class="button" onclick="updateAris()">Actualizar Arista</button>
                     <button class="button" onclick="deleteAris()">Eliminar Arista</button>
                     <div>
-                        <button style="margin-left: 65px; background-color: #FFCE29;" class="button" onclick="goBack()">Volver</button>
+                        <button style="margin-left: 65px; background-color: #646462 ;" class="button" onclick="goBack()">Volver</button>
                     </div>
                 </div>
             </div>
@@ -60,14 +60,14 @@
                 <input   id="toNode" placeholder="Hacia nodo">
                 <button  style="margin:20px; margin-left: 270px;" class="button" onclick="rtamax()">Ruta Maxima</button>
                 <button  class="button" onclick="rtamin()">Ruta Minima</button><div>
-                    <button style=" background-color: #FFCE29;" class="button" onclick="goBack()">Volver</button>
+                    <button style=" background-color: #646462 ;" class="button" onclick="goBack()">Volver</button>
                 </div>
             </div>
             <div id="controlsSection3" class="controls" style="display: none; margin: 10px;">
                 <button  style="margin:20px; margin-left: 250px;" class="button" onclick="showM1()">Matriz Adyacencia</button>
                 <button class="button" onclick="showM2()">Matriz Incidencia</button>
                 <div>
-                    <button style=" background-color: #FFCE29;" class="button" onclick="goBack()">Volver</button>
+                    <button style=" background-color: #646462 ;" class="button" onclick="goBack()">Volver</button>
                 </div>
             </div>
         </div>

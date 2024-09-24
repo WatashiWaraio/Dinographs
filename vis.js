@@ -149,6 +149,7 @@ function clearEdgeForm() {
 }
 function showM1(){
     const tabla= document.getElementById("tabla");
+    const posicion = document.getElementById("mynetwork");
     lis=nodes.getIds();
     console.log(lis[0]);
     for (let i = 0; i < nodes.length; i++) {
