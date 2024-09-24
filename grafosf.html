@@ -51,17 +51,25 @@
                     </select>
                     <button class="button" onclick="updateAris()">Actualizar Arista</button>
                     <button class="button" onclick="deleteAris()">Eliminar Arista</button>
+                    <div>
+                        <button onclick="goBack()">volver</button>
+                    </div>
                 </div>
             </div>
             <div  id="controlsSection2" class="controls" style="display: none; margin: 10px;"> 
                 <input  id="fromNode" placeholder="Desde nodo">
                 <input   id="toNode" placeholder="Hacia nodo">
                 <button  style="margin:20px; margin-left: 270px;" class="button" onclick="rtamax()">Ruta Maxima</button>
-                <button  class="button" onclick="rtamin()">Ruta Minima</button>
+                <button  class="button" onclick="rtamin()">Ruta Minima</button><div>
+                    <button onclick="goBack()">volver</button>
+                </div>
             </div>
             <div id="controlsSection3" class="controls" style="display: none; margin: 10px;">
                 <button  style="margin:20px; margin-left: 250px;" class="button" onclick="showM1()">Matriz Adyacencia</button>
                 <button class="button" onclick="showM2()">Matriz Incidencia</button>
+                <div>
+                    <button onclick="goBack()">volver</button>
+                </div>
             </div>
         </div>
     <script src="vis.js"></script>
@@ -77,6 +85,12 @@
         function showControls3() {
             document.getElementById("mainButtons").style.display = "none";
             document.getElementById("controlsSection3").style.display = "block";
+        }
+        function goBack() {
+            document.getElementById("controlsSection").style.display = "none";
+            document.getElementById("controlsSection2").style.display = "none";
+            document.getElementById("controlsSection3").style.display = "none";
+            document.getElementById("mainButtons").style.display = "block";
         }
         function doClick() {
             var el = document.getElementById("input");
