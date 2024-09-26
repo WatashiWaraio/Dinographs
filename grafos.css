@@ -26,10 +26,26 @@ body {
     border: 2px solid rgb(0, 0, 0);
     border-radius: 5px;
 }
-
 .table-container {
     margin: 0 auto;
+    margin-top: 10px;
+    width: 50%; 
+    border-collapse: collapse;
+    text-align: center;
   }
+  
+  #tabla {
+    width: 50%; 
+    border: 1px solid black;
+  }
+  
+  #tabla td, #tabla th {
+    border: 3px solid black;
+    padding: 4px;
+    text-align: center;
+  }
+  
+  
 .controls {
     margin-top: 20px;
     height: auto;

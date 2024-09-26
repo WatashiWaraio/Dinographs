@@ -147,29 +147,93 @@ function clearEdgeForm() {
     document.getElementById('toNode').value = '';
     document.getElementById('newNodeCost').value = '';
 }
-function showM1(){
-    const tabla= document.getElementById("tabla");
-    const posicion = document.getElementById("mynetwork");
-    lis=nodes.getIds();
-    console.log(lis[0]);
-    for (let i = 0; i < nodes.length; i++) {
-        console.log(lis[i]);
-        var fila=tabla.insertRow(-1);
-        for (let j = 0; j < nodes.length; j++) {
-            var celda= fila.insertCell(-1);
-            const edgeval=edges.get({
-                filter: (item) => item.from === lis[i] && item.to ===lis[j] ||(item.from === lis[j] && item.to ===lis[i] && item.arrows!=="to")
+
+function showM1() {
+    const tabla = document.getElementById("tabla");
+    tabla.innerHTML = "";
+
+    const nodesList = nodes.get();
+
+    let headerRow = tabla.insertRow(-1);
+    let headerCell = document.createElement("th");
+    headerCell.innerHTML = "Nodos"; 
+    headerCell.style.fontWeight = 'bold'; 
+    headerCell.style.backgroundColor = '#e0e0e0';
+    headerRow.appendChild(headerCell);
+
+    nodesList.forEach(node => {
+        let cell = document.createElement("th");
+        cell.innerHTML = node.label; 
+        cell.style.fontWeight = 'bold'; 
+        cell.style.backgroundColor = '#e0e0e0';
+        headerRow.appendChild(cell);
+    });
+
+    nodesList.forEach(fromNode => {
+        let fila = tabla.insertRow(-1);
+        let cell = fila.insertCell(-1);
+        cell.innerHTML = fromNode.label;
+        cell.style.fontWeight = 'bold'; 
+        cell.style.backgroundColor = '#e0e0e0';
+
+        nodesList.forEach(toNode => {
+            let celda = fila.insertCell(-1);
+            const edgeval = edges.get({
+                filter: (item) =>
+                    (item.from === fromNode.id && item.to === toNode.id) ||
+                    (item.from === toNode.id && item.to === fromNode.id && item.arrows !== "to")
             })[0];
-            console.log(edgeval);
-            if(edgeval){
-                celda.innerHTML= edgeval.label;
-            }else{
-                celda.innerHTML=0;
+            celda.innerHTML = edgeval ? edgeval.label : 0;
+        });
+    });
+
+    tabla.style.display = "table";
+}
+
+
+function showM2() {
+    const tabla = document.getElementById("tabla");
+    tabla.innerHTML = "";
+    
+    const edgesList = edges.get(); 
+    const nodesList = nodes.get(); 
+
+    const headerRow = tabla.insertRow(-1);
+
+    let headerCell = document.createElement("th");
+    headerCell.innerHTML = "Nodos/Aristas"; 
+    headerCell.style.fontWeight = 'bold'; 
+    headerCell.style.backgroundColor = '#e0e0e0';
+    headerRow.appendChild(headerCell);
+
+    for (let edge of edgesList) {
+        const headerCell = headerRow.insertCell(-1);
+        const sourceNode = nodes.get(edge.from);
+        const targetNode = nodes.get(edge.to);
+        headerCell.innerHTML = `${sourceNode.label}-${targetNode.label}`;
+        headerCell.style.fontWeight = 'bold'; 
+        headerCell.style.backgroundColor = '#e0e0e0'; 
+    }
+
+    for (let node of nodesList) {
+        const row = tabla.insertRow(-1);
+        const nodeCell = row.insertCell(-1);
+        nodeCell.innerHTML = node.label;
+        nodeCell.style.fontWeight = 'bold'; 
+        nodeCell.style.backgroundColor = '#e0e0e0'; 
+
+        for (let edge of edgesList) {
+            const cell = row.insertCell(-1);
+            if (edge.from === node.id || edge.to === node.id) {
+                cell.innerHTML = "1"; 
+            } else {
+                cell.innerHTML = "0"; 
             }
         }
-        
     }
 }
+
+
 // Inicializar el select de nodos
 updateNodeSelect();
 updateArisSelect();

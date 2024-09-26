@@ -67,7 +67,7 @@
                 <button  style="margin:20px; margin-left: 250px;" class="button" onclick="showM1()">Matriz Adyacencia</button>
                 <button class="button" onclick="showM2()">Matriz Incidencia</button>
                 <div>
-                    <button style=" background-color: #646462 ;" class="button" onclick="goBack()">Volver</button>
+                    <button style=" background-color: #646462 ;" class="button" onclick="goBackMt()">Volver</button>
                 </div>
             </div>
         </div>
@@ -90,6 +90,16 @@
             document.getElementById("controlsSection2").style.display = "none";
             document.getElementById("controlsSection3").style.display = "none";
             document.getElementById("mainButtons").style.display = "block";
+           
+        }
+        function goBackMt() {
+            document.getElementById("controlsSection").style.display = "none";
+            document.getElementById("controlsSection2").style.display = "none";
+            document.getElementById("controlsSection3").style.display = "none";
+            document.getElementById("mainButtons").style.display = "block";
+            const tabla = document.getElementById("tabla");
+            tabla.innerHTML = "";  
+            tabla.style.display = "none";
         }
         function doClick() {
             var el = document.getElementById("input");
