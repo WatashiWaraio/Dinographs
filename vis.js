@@ -154,62 +154,6 @@ function clearEdgeForm() {
 }
 
 
-
-function dikjstra (StartNode,EndNode){
-    const nodesList = nodes.get();
-    const edgesList = edges.get();
-
-    const distancia = {}
-    const noVisitado = {}
-    const previo = {}
-
-    for (let node in nodesList){
-        if(node == StartNode){
-            distancia[node] = 0;
-        }
-        else {
-            distancia[node] = Infinity;
-        }
-      noVisitado[node] = true;
-    }
-
-    for (let edge in edgesList){
-        const edgeData = edgesList[edge];
-        const desdeNodo = edgeData.from;
-        const hastaNodo = edgeData.to;
-        const peso = edgeData.label;
-
-        if (distancia[desdeNodo] + peso < distancia[hastaNodo]) {
-            distancia[hastaNodo] = distancia[desdeNodo] + peso;
-            previo[hastaNodo] = desdeNodo;
-        }
-    }
-
-    noVisitado[StartNode] = false;
-
-    let current = StartNode;
-    let path = [current];
-    while (current !== EndNode) {
-        current = previo[current];
-        path.unshift(current);
-    }
-
-    console.log(`La ruta más corta desde ${StartNode} a ${EndNode} es:`);
-    console.log(path.join(' -> '));
-
-    return { distancia, path };
-    
-}
-
-function rtamin(){
-    const StartNode = document.getElementById("fromNode").value;
-    const EndNode = document.getElementById("toNode").value;
-
-    dikjstra(StartNode,EndNode);
-
-}
-
-
 function showM1() {
     const tabla = document.getElementById("tabla");
     tabla.innerHTML = "";
@@ -294,6 +238,135 @@ function showM2() {
         }
     }
 }
+
+
+function dijkstra(startNodeId, endNodeId) {
+    let distances = {};
+    let previousNodes = {};
+    let unvisitedNodes = new Set();
+
+    
+    const nodesList = nodes.get();
+    const edgesList = edges.get();
+
+
+    nodesList.forEach(node => {
+        distances[node.id] = Infinity;
+        previousNodes[node.id] = null;
+        unvisitedNodes.add(node.id);
+    });
+
+
+    distances[startNodeId] = 0;
+
+
+    while (unvisitedNodes.size > 0) {
+        let currentNodeId = Array.from(unvisitedNodes).reduce((closestNode, nodeId) => {
+            if (closestNode === null) return nodeId;
+            return distances[nodeId] < distances[closestNode] ? nodeId : closestNode;
+        }, null);
+
+    
+        if (distances[currentNodeId] === Infinity) break;
+
+        unvisitedNodes.delete(currentNodeId);
+
+        if (currentNodeId === endNodeId) break;
+
+
+        edgesList.forEach(edge => {
+            const neighborId = (edge.from === currentNodeId) ? edge.to : (edge.to === currentNodeId) ? edge.from : null;
+            const weight = parseInt(edge.label); 
+
+            if (neighborId !== null && unvisitedNodes.has(neighborId)) {
+                const newDistance = distances[currentNodeId] + weight;
+
+              
+                if (newDistance < distances[neighborId]) {
+                    distances[neighborId] = newDistance;
+                    previousNodes[neighborId] = currentNodeId;
+                }
+            }
+        });
+    }
+
+    const path = reconstructPath(previousNodes, startNodeId, endNodeId);
+
+
+    if (path.length > 0) {
+        showRouteInTable(path, distances);
+        animatePath(path);
+    } else {
+        alert("No hay ruta mínima disponible");
+    }
+
+    return path;
+}
+
+function reconstructPath(previousNodes, startNodeId, endNodeId) {
+    const path = [];
+    let currentNodeId = endNodeId;
+
+    while (currentNodeId) {
+        path.unshift(currentNodeId);
+        currentNodeId = previousNodes[currentNodeId];
+    }
+
+    return path[0] === startNodeId ? path : [];
+}
+
+
+function animatePath(path) {
+    let currentNodeIndex = 0;
+
+    const animateNextNode = () => {
+        if (currentNodeIndex < path.length - 1) {
+            const fromNodeId = path[currentNodeIndex];
+            const toNodeId = path[currentNodeIndex + 1];
+            const edgeId = edges.get().find(edge => 
+                (edge.from === fromNodeId && edge.to === toNodeId) || 
+                (edge.from === toNodeId && edge.to === fromNodeId)
+            )?.id;
+
+            if (edgeId) {
+                edges.update({
+                    id: edgeId,
+                    color: { color: '#ff0000', highlight: '#ff0000' },
+                    width: 3
+                });
+            }
+
+            nodes.update({
+                id: fromNodeId,
+                color: { background: '#ff0000', border: '#ff0000' }
+            });
+
+            nodes.update({
+                id: toNodeId,
+                color: { background: '#ff0000', border: '#ff0000' }
+            });
+
+            currentNodeIndex++;
+            setTimeout(animateNextNode, 1500);
+        }
+    };
+
+    animateNextNode();
+}
+
+
+function showRouteInTable(path, distances) {
+    const rutaDiv = document.getElementById("ruta");
+    rutaDiv.innerHTML = path.map(nodeId => `[${nodes.get(nodeId).label}, ${distances[nodeId]}]`).join(', ');
+}
+
+function rtamin() {
+    const startNodeId = document.getElementById("fromNode").value;
+    const endNodeId = document.getElementById("toNode").value;
+    dijkstra(startNodeId, endNodeId);
+}
+
+
 
 
 // Inicializar el select de nodos
