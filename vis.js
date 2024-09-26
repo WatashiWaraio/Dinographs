@@ -161,30 +161,37 @@ function dijkstra(startNodeId, endNodeId, isMax = false) {
     const previousNodes = {};
     const unvisitedNodes = new Set(nodesList.map(node => node.id));
 
-  
+   
     nodesList.forEach(node => {
-        distances[node.id] = isMax ? -Infinity : Infinity; 
-        previousNodes[node.id] = null; 
+        distances[node.id] = isMax ? -Infinity : Infinity;
+        previousNodes[node.id] = null;
     });
-    distances[startNodeId] = 0; 
+    distances[startNodeId] = 0;
 
     while (unvisitedNodes.size > 0) {
         let currentNodeId = Array.from(unvisitedNodes).reduce((bestNode, nodeId) => {
-            return isMax ? (distances[nodeId] > distances[bestNode] ? nodeId : bestNode)
-                         : (distances[nodeId] < distances[bestNode] ? nodeId : bestNode);
-        });
+            if (bestNode === null) return nodeId; 
+            return isMax ? 
+                (distances[nodeId] > distances[bestNode] ? nodeId : bestNode) :
+                (distances[nodeId] < distances[bestNode] ? nodeId : bestNode);
+        }, null);
 
-        unvisitedNodes.delete(currentNodeId); 
+        if (currentNodeId === null || distances[currentNodeId] === (isMax ? -Infinity : Infinity)) {
+            break;
+        }
 
-        if (currentNodeId === endNodeId) break; 
-
-        edgesList.forEach(edge => {
-
-            if (edge.from === currentNodeId || edge.to === currentNodeId) {
-                const neighborId = edge.from === currentNodeId ? edge.to : edge.from;
-                const newDistance = distances[currentNodeId] + 1; 
+        unvisitedNodes.delete(currentNodeId);
 
        
+        if (currentNodeId === endNodeId) break;
+
+        edgesList.forEach(edge => {
+            const neighborId = (edge.from === currentNodeId) ? edge.to : (edge.to === currentNodeId) ? edge.from : null;
+            const weight = parseInt(edge.label); 
+
+            if (neighborId !== null) {
+                const newDistance = distances[currentNodeId] + weight;
+
                 if ((isMax && newDistance > distances[neighborId]) || (!isMax && newDistance < distances[neighborId])) {
                     distances[neighborId] = newDistance;
                     previousNodes[neighborId] = currentNodeId;
@@ -193,16 +200,19 @@ function dijkstra(startNodeId, endNodeId, isMax = false) {
         });
     }
 
+ 
     const path = reconstructPath(previousNodes, startNodeId, endNodeId);
     if (path.length > 0) {
         showRouteInTable(path, distances);
-        animatePath(path); 
+        animatePath(path);
     } else {
         alert(isMax ? "No hay ruta máxima disponible" : "No hay ruta mínima disponible");
     }
 
     return path;
 }
+
+
 function reconstructPath(previousNodes, startNodeId, endNodeId) {
     const path = [];
     let currentNodeId = endNodeId;
@@ -215,6 +225,7 @@ function reconstructPath(previousNodes, startNodeId, endNodeId) {
     return path[0] === startNodeId ? path : [];
 }
 
+
 function animatePath(path) {
     let currentNodeIndex = 0;
 
@@ -222,14 +233,21 @@ function animatePath(path) {
         if (currentNodeIndex < path.length - 1) {
             const fromNodeId = path[currentNodeIndex];
             const toNodeId = path[currentNodeIndex + 1];
-            const edgeId = `${fromNodeId}-${toNodeId}`;
+            const edgeId = edges.get().find(edge => 
+                (edge.from === fromNodeId && edge.to === toNodeId) || 
+                (edge.from === toNodeId && edge.to === fromNodeId)
+            )?.id;
 
-            edges.update({
-                id: edgeId,
-                color: { color: '#ff0000', highlight: '#ff0000' },
-                width: 3
-            });
+           
+            if (edgeId) {
+                edges.update({
+                    id: edgeId,
+                    color: { color: '#ff0000', highlight: '#ff0000' },
+                    width: 3
+                });
+            }
 
+           
             nodes.update({
                 id: fromNodeId,
                 color: { background: '#ff0000', border: '#ff0000' }
@@ -248,21 +266,23 @@ function animatePath(path) {
     animateNextNode();
 }
 
+
 function showRouteInTable(path, distances) {
     const rutaDiv = document.getElementById("ruta");
     rutaDiv.innerHTML = path.map(nodeId => `[${nodes.get(nodeId).label}, ${distances[nodeId]}]`).join(', ');
 }
 
+
 function rtamin() {
-    const startNodeId = document.getElementById("fromNode").value; 
-    const endNodeId = document.getElementById("toNode").value; 
-    dijkstra(startNodeId, endNodeId, false); 
+    const startNodeId = document.getElementById("fromNode").value;
+    const endNodeId = document.getElementById("toNode").value;
+    dijkstra(startNodeId, endNodeId, false);
 }
 
 function rtamax() {
-    const startNodeId = document.getElementById("fromNode").value; 
-    const endNodeId = document.getElementById("toNode").value; 
-    dijkstra(startNodeId, endNodeId, true); 
+    const startNodeId = document.getElementById("fromNode").value;
+    const endNodeId = document.getElementById("toNode").value;
+    dijkstra(startNodeId, endNodeId, true);
 }
 
 
