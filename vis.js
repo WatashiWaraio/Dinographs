@@ -193,6 +193,18 @@ function animatePath(path) {
     animateNextNode();
 }
 
+function reconstructPath(previousNodes, startNodeId, endNodeId) {
+    const path = [];
+    let currentNodeId = endNodeId;
+
+    while (currentNodeId) {
+        path.unshift(currentNodeId);
+        currentNodeId = previousNodes[currentNodeId];
+    }
+
+    return path[0] === startNodeId ? path : [];
+}
+
 function showRouteInTable(path, distances) {
     const rutaDiv = document.getElementById("ruta");
     rutaDiv.innerHTML = path.map(nodeId => `[${nodes.get(nodeId).label}, ${distances[nodeId]}]`).join(', ');
@@ -253,6 +265,8 @@ function rtamin() {
 
     return path;
 }
+
+
 
 function showM1() {
     const tabla = document.getElementById("tabla");
