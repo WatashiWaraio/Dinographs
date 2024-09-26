@@ -148,6 +148,119 @@ function clearEdgeForm() {
     document.getElementById('newNodeCost').value = '';
 }
 
+
+function dijkstra(startNodeId, endNodeId, isMax = false) {
+    const nodesList = nodes.get();
+    const edgesList = edges.get();
+    const distances = {};
+    const previousNodes = {};
+    const unvisitedNodes = new Set(nodesList.map(node => node.id));
+
+  
+    nodesList.forEach(node => {
+        distances[node.id] = isMax ? -Infinity : Infinity; 
+        previousNodes[node.id] = null; 
+    });
+    distances[startNodeId] = 0; 
+
+    while (unvisitedNodes.size > 0) {
+        let currentNodeId = Array.from(unvisitedNodes).reduce((bestNode, nodeId) => {
+            return isMax ? (distances[nodeId] > distances[bestNode] ? nodeId : bestNode)
+                         : (distances[nodeId] < distances[bestNode] ? nodeId : bestNode);
+        });
+
+        unvisitedNodes.delete(currentNodeId); 
+
+        if (currentNodeId === endNodeId) break; 
+
+        edgesList.forEach(edge => {
+
+            if (edge.from === currentNodeId || edge.to === currentNodeId) {
+                const neighborId = edge.from === currentNodeId ? edge.to : edge.from;
+                const newDistance = distances[currentNodeId] + 1; 
+
+       
+                if ((isMax && newDistance > distances[neighborId]) || (!isMax && newDistance < distances[neighborId])) {
+                    distances[neighborId] = newDistance;
+                    previousNodes[neighborId] = currentNodeId;
+                }
+            }
+        });
+    }
+
+    const path = reconstructPath(previousNodes, startNodeId, endNodeId);
+    if (path.length > 0) {
+        showRouteInTable(path, distances);
+        animatePath(path); 
+    } else {
+        alert(isMax ? "No hay ruta máxima disponible" : "No hay ruta mínima disponible");
+    }
+
+    return path;
+}
+function reconstructPath(previousNodes, startNodeId, endNodeId) {
+    const path = [];
+    let currentNodeId = endNodeId;
+
+    while (currentNodeId) {
+        path.unshift(currentNodeId);
+        currentNodeId = previousNodes[currentNodeId];
+    }
+
+    return path[0] === startNodeId ? path : [];
+}
+
+function animatePath(path) {
+    let currentNodeIndex = 0;
+
+    const animateNextNode = () => {
+        if (currentNodeIndex < path.length - 1) {
+            const fromNodeId = path[currentNodeIndex];
+            const toNodeId = path[currentNodeIndex + 1];
+            const edgeId = `${fromNodeId}-${toNodeId}`;
+
+            edges.update({
+                id: edgeId,
+                color: { color: '#ff0000', highlight: '#ff0000' },
+                width: 3
+            });
+
+            nodes.update({
+                id: fromNodeId,
+                color: { background: '#ff0000', border: '#ff0000' }
+            });
+
+            nodes.update({
+                id: toNodeId,
+                color: { background: '#ff0000', border: '#ff0000' }
+            });
+
+            currentNodeIndex++;
+            setTimeout(animateNextNode, 1500);
+        }
+    };
+
+    animateNextNode();
+}
+
+function showRouteInTable(path, distances) {
+    const rutaDiv = document.getElementById("ruta");
+    rutaDiv.innerHTML = path.map(nodeId => `[${nodes.get(nodeId).label}, ${distances[nodeId]}]`).join(', ');
+}
+
+function rtamin() {
+    const startNodeId = document.getElementById("fromNode").value; 
+    const endNodeId = document.getElementById("toNode").value; 
+    dijkstra(startNodeId, endNodeId, false); 
+}
+
+function rtamax() {
+    const startNodeId = document.getElementById("fromNode").value; 
+    const endNodeId = document.getElementById("toNode").value; 
+    dijkstra(startNodeId, endNodeId, true); 
+}
+
+
 function showM1() {
     const tabla = document.getElementById("tabla");
     tabla.innerHTML = "";
