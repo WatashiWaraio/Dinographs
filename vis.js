@@ -27,7 +27,7 @@ function addNode() {
             
                 updateNodeSelect();
                 clearNodeForm();
-    }
+    }else{alert("compruebe el nombre del nodo")}
 }
 
 function updateNode() {
@@ -41,7 +41,7 @@ function updateNode() {
         updateNodeSelect();
         updateArisSelect();
         clearNodeForm();
-    }
+    }else{alert("compruebe el nombre del nodo")}
 }
 
 function deleteNode() {
@@ -81,20 +81,23 @@ function addEdge() {
     const toId = nodes.get({
         filter: (item) => item.label === toNode
     })[0]?.id;
-
-    var newId = edges.length + 1;
-    while(edges.get(newId)){newId++;}
-
-    if (fromId && toId) {
-        edges.add({
-            id:newId,
-            from: fromId,
-            to: toId,
-            label: nodeCost,
-            arrows: dir? "to":null,
-        });
-        updateArisSelect();
-        clearEdgeForm();
+ 
+    if (nodeCost==="0"|| isNaN(nodeCost)){ alert("costo de arista no permitido");}
+    else{
+        var newId = edges.length + 1;
+        while(edges.get(newId)){newId++;}
+    
+        if (fromId && toId) {
+            edges.add({
+                id:newId,
+                from: fromId,
+                to: toId,
+                label: nodeCost,
+                arrows: dir? "to":null,
+            });
+            updateArisSelect();
+            clearEdgeForm();
+        }
     }
 }
 
@@ -102,7 +105,7 @@ function updateAris() {
     const selectedAris = parseInt(document.getElementById('selectedAris').value);
     const aris = edges.get(selectedAris);
     const dir = document.getElementById('dirigido').checked;
-
+    const name =document.getElementById('newNodeCost').value;
     const fromNode = document.getElementById('fromNode').value;
     const toNode = document.getElementById('toNode').value;
     const fromId = nodes.get({
@@ -112,14 +115,16 @@ function updateAris() {
     const toId = nodes.get({
         filter: (item) => item.label === toNode
     })[0]?.id;
-    if (aris) {
-        aris.label = document.getElementById('newNodeCost').value || aris.label;
+    if (aris && !(name =="0"|| isNaN(name))) {
+        aris.label = name || aris.label;
         aris.from = fromId || aris.from;
         aris.to = toId || aris.to;
         aris.arrows = dir? "to":null;
         edges.update(aris);
         updateArisSelect();
         clearEdgeForm();
+    }else{
+        alert("costo de arista no permitido");
     }
 
 }
