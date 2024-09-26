@@ -155,117 +155,59 @@ function clearEdgeForm() {
 
 
 
-function animatePath(path) {
-    let currentNodeIndex = 0;
-
-    const animateNextNode = () => {
-        if (currentNodeIndex < path.length - 1) {
-            const fromNodeId = path[currentNodeIndex];
-            const toNodeId = path[currentNodeIndex + 1];
-            const edgeId = edges.get().find(edge => 
-                (edge.from === fromNodeId && edge.to === toNodeId) || 
-                (edge.from === toNodeId && edge.to === fromNodeId)
-            )?.id;
-
-            if (edgeId) {
-                edges.update({
-                    id: edgeId,
-                    color: { color: '#ff0000', highlight: '#ff0000' },
-                    width: 3
-                });
-            }
-
-            nodes.update({
-                id: fromNodeId,
-                color: { background: '#ff0000', border: '#ff0000' }
-            });
-
-            nodes.update({
-                id: toNodeId,
-                color: { background: '#ff0000', border: '#ff0000' }
-            });
-
-            currentNodeIndex++;
-            setTimeout(animateNextNode, 1500);
-        }
-    };
-
-    animateNextNode();
-}
-
-function reconstructPath(previousNodes, startNodeId, endNodeId) {
-    const path = [];
-    let currentNodeId = endNodeId;
-
-    while (currentNodeId) {
-        path.unshift(currentNodeId);
-        currentNodeId = previousNodes[currentNodeId];
-    }
-
-    return path[0] === startNodeId ? path : [];
-}
-
-function showRouteInTable(path, distances) {
-    const rutaDiv = document.getElementById("ruta");
-    rutaDiv.innerHTML = path.map(nodeId => `[${nodes.get(nodeId).label}, ${distances[nodeId]}]`).join(', ');
-}
-
-function rtamin() {
-    const startNodeId = document.getElementById("fromNode").value;
-    const endNodeId = document.getElementById("toNode").value;
-
+function dikjstra (StartNode,EndNode){
     const nodesList = nodes.get();
     const edgesList = edges.get();
-    const distances = {};
-    const previousNodes = {};
-    const unvisitedNodes = new Set(nodesList.map(node => node.id));
 
-    nodesList.forEach(node => {
-        distances[node.id] = Infinity;
-        previousNodes[node.id] = null;
-    });
-    distances[startNodeId] = 0;
+    const distancia = {}
+    const noVisitado = {}
+    const previo = {}
 
-    while (unvisitedNodes.size > 0) {
-        let currentNodeId = Array.from(unvisitedNodes).reduce((bestNode, nodeId) => {
-            if (bestNode === null) return nodeId; 
-            return distances[nodeId] < distances[bestNode] ? nodeId : bestNode;
-        }, null);
-
-        if (currentNodeId === null || distances[currentNodeId] === Infinity) {
-            break;
+    for (let node in nodesList){
+        if(node == StartNode){
+            distancia[node] = 0;
         }
-
-        unvisitedNodes.delete(currentNodeId);
-
-        if (currentNodeId === endNodeId) break;
-
-        edgesList.forEach(edge => {
-            const neighborId = (edge.from === currentNodeId) ? edge.to : (edge.to === currentNodeId) ? edge.from : null;
-            const weight = parseInt(edge.label); 
-
-            if (neighborId !== null) {
-                const newDistance = distances[currentNodeId] + weight;
-
-                if (newDistance < distances[neighborId]) {
-                    distances[neighborId] = newDistance;
-                    previousNodes[neighborId] = currentNodeId;
-                }
-            }
-        });
+        else {
+            distancia[node] = Infinity;
+        }
+      noVisitado[node] = true;
     }
 
-    const path = reconstructPath(previousNodes, startNodeId, endNodeId);
-    if (path.length > 0) {
-        showRouteInTable(path, distances);
-        animatePath(path);
-    } else {
-        alert("No hay ruta mínima disponible");
+    for (let edge in edgesList){
+        const edgeData = edgesList[edge];
+        const desdeNodo = edgeData.from;
+        const hastaNodo = edgeData.to;
+        const peso = edgeData.label;
+
+        if (distancia[desdeNodo] + peso < distancia[hastaNodo]) {
+            distancia[hastaNodo] = distancia[desdeNodo] + peso;
+            previo[hastaNodo] = desdeNodo;
+        }
     }
 
-    return path;
+    noVisitado[StartNode] = false;
+
+    let current = StartNode;
+    let path = [current];
+    while (current !== EndNode) {
+        current = previo[current];
+        path.unshift(current);
+    }
+
+    console.log(`La ruta más corta desde ${StartNode} a ${EndNode} es:`);
+    console.log(path.join(' -> '));
+
+    return { distancia, path };
+    
 }
 
+function rtamin(){
+    const StartNode = document.getElementById("fromNode").value;
+    const EndNode = document.getElementById("toNode").value;
+
+    dikjstra(StartNode,EndNode);
+
+}
 
 
 function showM1() {
