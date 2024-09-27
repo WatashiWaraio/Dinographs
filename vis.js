@@ -239,23 +239,31 @@ function showM2() {
     }
 }
 
+function dijkstra(startNodeName, endNodeName) {
+    const startNodeId = nodes.get({
+        filter: (item) => item.label === startNodeName
+    })[0]?.id;
 
-function dijkstra(startNodeId, endNodeId) {
+    const endNodeId = nodes.get({
+        filter: (item) => item.label === endNodeName
+    })[0]?.id;
+
+    if (!startNodeId || !endNodeId) {
+        alert('El nodo de inicio "${startNodeName}" o el nodo de destino "${endNodeName}" no existe.');
+        return;
+    }
+
     let distances = {};
     let previousNodes = {};
     let unvisitedNodes = new Set();
 
-    
     const nodesList = nodes.get();
     const edgesList = edges.get();
-
-
     nodesList.forEach(node => {
         distances[node.id] = Infinity;
         previousNodes[node.id] = null;
         unvisitedNodes.add(node.id);
     });
-
 
     distances[startNodeId] = 0;
 
@@ -266,22 +274,21 @@ function dijkstra(startNodeId, endNodeId) {
             return distances[nodeId] < distances[closestNode] ? nodeId : closestNode;
         }, null);
 
-    
         if (distances[currentNodeId] === Infinity) break;
 
         unvisitedNodes.delete(currentNodeId);
 
+   
         if (currentNodeId === endNodeId) break;
-
 
         edgesList.forEach(edge => {
             const neighborId = (edge.from === currentNodeId) ? edge.to : (edge.to === currentNodeId) ? edge.from : null;
-            const weight = parseInt(edge.label); 
+            const weight = parseInt(edge.label);  
 
             if (neighborId !== null && unvisitedNodes.has(neighborId)) {
                 const newDistance = distances[currentNodeId] + weight;
 
-              
+ 
                 if (newDistance < distances[neighborId]) {
                     distances[neighborId] = newDistance;
                     previousNodes[neighborId] = currentNodeId;
@@ -291,7 +298,6 @@ function dijkstra(startNodeId, endNodeId) {
     }
 
     const path = reconstructPath(previousNodes, startNodeId, endNodeId);
-
 
     if (path.length > 0) {
         showRouteInTable(path, distances);
@@ -307,7 +313,7 @@ function reconstructPath(previousNodes, startNodeId, endNodeId) {
     const path = [];
     let currentNodeId = endNodeId;
 
-    while (currentNodeId) {
+    while (currentNodeId !== null) {
         path.unshift(currentNodeId);
         currentNodeId = previousNodes[currentNodeId];
     }
@@ -315,8 +321,84 @@ function reconstructPath(previousNodes, startNodeId, endNodeId) {
     return path[0] === startNodeId ? path : [];
 }
 
+function dijkstraMax(startNodeName, endNodeName) {
+    const startNodeId = nodes.get({
+        filter: (item) => item.label === startNodeName
+    })[0]?.id;
+
+    const endNodeId = nodes.get({
+        filter: (item) => item.label === endNodeName
+    })[0]?.id;
+
+    if (!startNodeId || !endNodeId) {
+        alert(`El nodo de inicio "${startNodeName}" o el nodo de destino "${endNodeName}" no existe.`);
+        return;
+    }
+
+    let distances = {};
+    let previousNodes = {};
+    let unvisitedNodes = new Set();
+
+    const nodesList = nodes.get();
+    const edgesList = edges.get();
+    nodesList.forEach(node => {
+        distances[node.id] = -Infinity; 
+        previousNodes[node.id] = null;
+        unvisitedNodes.add(node.id);
+    });
+
+    distances[startNodeId] = 0;
+
+    while (unvisitedNodes.size > 0) {
+        let currentNodeId = Array.from(unvisitedNodes).reduce((farthestNode, nodeId) => {
+            if (farthestNode === null) return nodeId;
+            return distances[nodeId] > distances[farthestNode] ? nodeId : farthestNode;
+        }, null);
+
+        if (distances[currentNodeId] === -Infinity) break;
+
+        unvisitedNodes.delete(currentNodeId);
+
+        if (currentNodeId === endNodeId) break;
+
+        edgesList.forEach(edge => {
+            const neighborId = (edge.from === currentNodeId) ? edge.to : (edge.to === currentNodeId) ? edge.from : null;
+            const weight = parseInt(edge.label);  
+
+            if (neighborId !== null && unvisitedNodes.has(neighborId)) {
+                const newDistance = distances[currentNodeId] + weight;
+
+                if (newDistance > distances[neighborId]) { 
+                    distances[neighborId] = newDistance;
+                    previousNodes[neighborId] = currentNodeId;
+                }
+            }
+        });
+    }
+
+    const path = reconstructPath(previousNodes, startNodeId, endNodeId);
+
+    if (path.length > 0) {
+        showRouteInTable(path, distances);
+        animatePath(path);
+    } else {
+        alert("No hay ruta máxima disponible");
+    }
+
+    return path;
+}
+
 
 function animatePath(path) {
+
+    nodes.get().forEach(node => {
+        nodes.update({ id: node.id, color: { background: '#97C2FC', border: '#2B7CE9' } });
+    });
+
+    edges.get().forEach(edge => {
+        edges.update({ id: edge.id, color: { color: '#848484', highlight: '#848484' }, width: 1 });
+    });
+
     let currentNodeIndex = 0;
 
     const animateNextNode = () => {
@@ -361,12 +443,16 @@ function showRouteInTable(path, distances) {
 }
 
 function rtamin() {
-    const startNodeId = document.getElementById("fromNode").value;
-    const endNodeId = document.getElementById("toNode").value;
+    const startNodeId = document.getElementById("fromNodeRta").value;
+    const endNodeId = document.getElementById("toNodeRta").value;
     dijkstra(startNodeId, endNodeId);
 }
 
-
+function rtamax() {
+    const startNodeId = document.getElementById("fromNodeRta").value;
+    const endNodeId = document.getElementById("toNodeRta").value;
+    dijkstraMax(startNodeId, endNodeId);
+}
 
 
 // Inicializar el select de nodos
