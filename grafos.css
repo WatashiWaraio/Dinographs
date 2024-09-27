@@ -45,10 +45,15 @@ body {
     text-align: center;
   }
   
-.rutaMM{
-    margin: 0 auto;
-    margin-left: 350px;
-    margin-top: 10px;
+  .rutaMM {
+    margin: 0 auto; 
+    margin-top: 10px; 
+    width: 50%; 
+    text-align: center; 
+    padding: 4px; 
+}
+
+#ruta {
     width: 50%; 
 }
 .controls {
