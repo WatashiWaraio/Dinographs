@@ -454,7 +454,31 @@ function rtamax() {
     const endNodeId = document.getElementById("toNodeRta").value;
     dijkstraMax(startNodeId, endNodeId);
 }
+function downloadFile(){
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify([nodes.get(),edges.get()]));
+    var dlAnchorElem = document.getElementById('downloadAnchorElem');
+    dlAnchorElem.setAttribute("href",     dataStr     );
+    dlAnchorElem.setAttribute("download", "datos.json");
+    dlAnchorElem.click();
+}
+function handleFiles(input){
+    let file = input.files[0];
 
+    let reader = new FileReader();
+
+    reader.readAsText(file);
+
+    reader.onload = function() {
+        const dataThing=JSON.parse(reader.result);
+        console.log(dataThing);
+        nodes.clear();
+        nodes.add(dataThing["0"]);
+        edges.add(dataThing["1"]);
+        updateNodeSelect();
+        updateArisSelect();
+    };
+    
+}
 
 // Inicializar el select de nodos
 updateNodeSelect();
