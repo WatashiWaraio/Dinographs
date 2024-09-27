@@ -22,7 +22,7 @@
                 <button class="button" style="padding: 10px 70px; margin: 20px;" onclick="showControls1()">Grafos</button>
                 <button class="button" style="padding: 10px 70px; margin: 20px;" onclick="showControls2()">Calcular Ruta</button>
                 <button class="button" style="padding: 10px 50px; margin: 20px;" onclick="showControls3()">Matrices</button>
-                <input type="file" id="input" style="padding: 20px;margin-top: -40px;margin-left:0px; justify-content: center;" onchange="handleFiles(this.files)">
+                <input type="file" id="input" style="padding: 20px;margin-top: -40px;margin-left:0px; justify-content: center;" onchange="handleFiles(this)">
                 <button id="downloadButton" class="button" style="margin-left: 10px;background-color:#E81717;" onclick="downloadFile()">Descargar</button>
             </div>
             <div id="controlsSection" class="controls" style="display: none; margin: 10px;">
@@ -72,6 +72,7 @@
                 </div>
             </div>
         </div>
+        <a id="downloadAnchorElem" style="display:none"></a>
     <script src="vis.js"></script>
     <script>
         function showControls1() {
