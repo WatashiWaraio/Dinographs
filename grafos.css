@@ -45,7 +45,12 @@ body {
     text-align: center;
   }
   
-  
+.rutaMM{
+    margin: 0 auto;
+    margin-left: 350px;
+    margin-top: 10px;
+    width: 50%; 
+}
 .controls {
     margin-top: 20px;
     height: auto;

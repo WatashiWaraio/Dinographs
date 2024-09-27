@@ -440,6 +440,7 @@ function animatePath(path) {
 function showRouteInTable(path, distances) {
     const rutaDiv = document.getElementById("ruta");
     rutaDiv.innerHTML = path.map(nodeId => `[${nodes.get(nodeId).label}, ${distances[nodeId]}]`).join(', ');
+    rutaDiv.style.display = "block";
 }
 
 function rtamin() {
