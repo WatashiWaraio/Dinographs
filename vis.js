@@ -249,7 +249,7 @@ function dijkstra(startNodeName, endNodeName) {
     })[0]?.id;
 
     if (!startNodeId || !endNodeId) {
-        alert('El nodo de inicio "${startNodeName}" o el nodo de destino "${endNodeName}" no existe.');
+        alert(`El nodo de inicio "${startNodeName}" o el nodo de destino "${endNodeName}" no existe.`);
         return;
     }
 
@@ -267,7 +267,6 @@ function dijkstra(startNodeName, endNodeName) {
 
     distances[startNodeId] = 0;
 
-
     while (unvisitedNodes.size > 0) {
         let currentNodeId = Array.from(unvisitedNodes).reduce((closestNode, nodeId) => {
             if (closestNode === null) return nodeId;
@@ -278,20 +277,37 @@ function dijkstra(startNodeName, endNodeName) {
 
         unvisitedNodes.delete(currentNodeId);
 
-   
         if (currentNodeId === endNodeId) break;
 
         edgesList.forEach(edge => {
-            const neighborId = (edge.from === currentNodeId) ? edge.to : (edge.to === currentNodeId) ? edge.from : null;
-            const weight = parseInt(edge.label);  
+            // Obtener el peso de la arista
+            const weight = parseInt(edge.label);
 
-            if (neighborId !== null && unvisitedNodes.has(neighborId)) {
-                const newDistance = distances[currentNodeId] + weight;
+            // Validar si se puede seguir la arista en la dirección normal
+            if (edge.from === currentNodeId) {
+                const neighborId = edge.to;
 
- 
-                if (newDistance < distances[neighborId]) {
-                    distances[neighborId] = newDistance;
-                    previousNodes[neighborId] = currentNodeId;
+                if (unvisitedNodes.has(neighborId)) {
+                    const newDistance = distances[currentNodeId] + weight;
+
+                    if (newDistance < distances[neighborId]) {
+                        distances[neighborId] = newDistance;
+                        previousNodes[neighborId] = currentNodeId;
+                    }
+                }
+            }
+            
+            // Validar si se puede seguir la arista en la dirección inversa
+            if (edge.to === currentNodeId && edge.arrows === 'to') { // Asegurarte de que la arista tenga la propiedad 'arrows'
+                const neighborId = edge.from;
+
+                if (unvisitedNodes.has(neighborId)) {
+                    const newDistance = distances[currentNodeId] + weight;
+
+                    if (newDistance < distances[neighborId]) {
+                        distances[neighborId] = newDistance;
+                        previousNodes[neighborId] = currentNodeId;
+                    }
                 }
             }
         });
@@ -308,6 +324,7 @@ function dijkstra(startNodeName, endNodeName) {
 
     return path;
 }
+
 
 function reconstructPath(previousNodes, startNodeId, endNodeId) {
     const path = [];
@@ -362,15 +379,33 @@ function dijkstraMax(startNodeName, endNodeName) {
         if (currentNodeId === endNodeId) break;
 
         edgesList.forEach(edge => {
-            const neighborId = (edge.from === currentNodeId) ? edge.to : (edge.to === currentNodeId) ? edge.from : null;
-            const weight = parseInt(edge.label);  
+            const weight = parseInt(edge.label);
+            
+            
+            if (edge.from === currentNodeId) {
+                const neighborId = edge.to;
 
-            if (neighborId !== null && unvisitedNodes.has(neighborId)) {
-                const newDistance = distances[currentNodeId] + weight;
+                if (unvisitedNodes.has(neighborId)) {
+                    const newDistance = distances[currentNodeId] + weight;
 
-                if (newDistance > distances[neighborId]) { 
-                    distances[neighborId] = newDistance;
-                    previousNodes[neighborId] = currentNodeId;
+                    if (newDistance > distances[neighborId]) { 
+                        distances[neighborId] = newDistance;
+                        previousNodes[neighborId] = currentNodeId;
+                    }
+                }
+            }
+
+         
+            if (edge.to === currentNodeId && edge.arrows === 'to') {
+                const neighborId = edge.from;
+
+                if (unvisitedNodes.has(neighborId)) {
+                    const newDistance = distances[currentNodeId] + weight;
+
+                    if (newDistance > distances[neighborId]) {
+                        distances[neighborId] = newDistance;
+                        previousNodes[neighborId] = currentNodeId;
+                    }
                 }
             }
         });
@@ -387,6 +422,7 @@ function dijkstraMax(startNodeName, endNodeName) {
 
     return path;
 }
+
 
 
 function animatePath(path) {
