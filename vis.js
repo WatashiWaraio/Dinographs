@@ -94,6 +94,7 @@ function addEdge() {
                 to: toId,
                 label: nodeCost,
                 arrows: dir? "to":"",
+                color: { color: '#848484', highlight: '#848484' }
             });
             updateArisSelect();
             clearEdgeForm();
@@ -237,6 +238,7 @@ function showM2() {
             }
         }
     }
+    tabla.style.display = "table";
 }
 
 function dijkstra(startNodeName, endNodeName) {
