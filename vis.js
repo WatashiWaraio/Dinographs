@@ -93,7 +93,7 @@ function addEdge() {
                 from: fromId,
                 to: toId,
                 label: nodeCost,
-                arrows: dir? "to":null,
+                arrows: dir? "to":"",
             });
             updateArisSelect();
             clearEdgeForm();
@@ -119,7 +119,7 @@ function updateAris() {
         aris.label = name || aris.label;
         aris.from = fromId || aris.from;
         aris.to = toId || aris.to;
-        aris.arrows = dir? "to":null;
+        aris.arrows = dir? "to":"";
         edges.update(aris);
         updateArisSelect();
         clearEdgeForm();
