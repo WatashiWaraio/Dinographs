@@ -300,7 +300,7 @@ function dijkstra(startNodeName, endNodeName) {
             }
             
             // Validar si se puede seguir la arista en la dirección inversa
-            if (edge.to === currentNodeId && edge.arrows === 'to') { // Asegurarte de que la arista tenga la propiedad 'arrows'
+            if (edge.to === currentNodeId && edge.arrows !== 'to') { // Asegurarte de que la arista tenga la propiedad 'arrows'
                 const neighborId = edge.from;
 
                 if (unvisitedNodes.has(neighborId)) {
@@ -398,7 +398,7 @@ function dijkstraMax(startNodeName, endNodeName) {
             }
 
          
-            if (edge.to === currentNodeId && edge.arrows === 'to') {
+            if (edge.to === currentNodeId && edge.arrows !== 'to') {
                 const neighborId = edge.from;
 
                 if (unvisitedNodes.has(neighborId)) {
