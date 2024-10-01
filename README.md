@@ -12,3 +12,23 @@ created by me and my friend Miguel 👨‍💻👨‍💻, this simple yet power
 🚀 Dijkstra Algorithm: Calculate the shortest path on your graph using Dijkstra's famous algorithm. Watch the results come to life on your graph! 📈✨
 
 🖱️ Interactive UI: Add and manage nodes and edges with just a few clicks! The graph and matrix update instantly for smooth learning.
+
+## **🦖 Start**
+![image](https://github.com/user-attachments/assets/4f8e43aa-83eb-49c2-b176-33afe2893b9b)
+
+## **🦖 Graphs Admin**
+![image](https://github.com/user-attachments/assets/43be55ba-2cb8-4dbf-b067-1120a3d206d8)
+
+## **🦖 Dijkstra Min Rute and Max Rute**
+
+![image](https://github.com/user-attachments/assets/cb88d421-a984-40cc-a852-749d93f27c7d)
+![image](https://github.com/user-attachments/assets/1474e46f-4298-49b1-a50a-1d53b4bb2f2f)
+
+
+## **🦖 Adjacency and Incidence Matrices**
+
+![image](https://github.com/user-attachments/assets/b4b3f009-400f-4bbb-bd75-6b71f0357b29)
+![image](https://github.com/user-attachments/assets/2d4c1783-a824-4100-a44e-aef497da0ed9)
+
+
+
