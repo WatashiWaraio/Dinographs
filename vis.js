@@ -93,7 +93,7 @@ function addEdge() {
                 from: fromId,
                 to: toId,
                 label: nodeCost,
-                arrows: dir? "to":null,
+                arrows: dir? "to":""
             });
             updateArisSelect();
             clearEdgeForm();
@@ -509,6 +509,7 @@ function handleFiles(input){
         const dataThing=JSON.parse(reader.result);
         console.log(dataThing);
         nodes.clear();
+        edges.clear();
         nodes.add(dataThing["0"]);
         edges.add(dataThing["1"]);
         updateNodeSelect();
